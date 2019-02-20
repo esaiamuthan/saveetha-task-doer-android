@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">Saveetha Task Doer</string>
+
+    <!-- common alert realted -->
+    <string name="alert_ok">OK</string>
+    <string name="alert_cancel">Annuler</string>
+    <string name="alert_continue">Continuer</string>
+    <string name="alert_yes">Oui</string>
+    <string name="alert_no">Non</string>
+    <string name="alert_field_required">Champs obligatoires</string>
+    <string name="alert_invalid_phone">Numéro de téléphone invalide</string>
+    <string name="alert_no_network">Une erreur est survenue. Vérifiez votre connexion internet</string>
+
+    <!--Login Related-->
+    <string name="login">Login</string>
+    <string name="login_username_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_forget_password_label">Forgotten?</string>
+    <string name="login_label">Login</string>
+    <string name="forget_submit_latbel">Submit</string>
+
+    <!--Register Related-->
+    <string name="registration">Registration</string>
+    <string name="register_label">Register</string>
+    <string name="create_account">Create an account</string>
+    <string name="register_profile_type_label">Profile type Studied Staff</string>
+    <string name="register_name_label">Name</string>
+    <string name="register_college_id_label">College Id</string>
+    <string name="register_email_label">Email</string>
+    <string name="register_password_label">Password</string>
+    <string name="register_confirm_password_label">Confirm Password</string>
+    <string name="register_department_label">Department</string>
+    <string name="register_year_label">Year</string>
+
+    <string-array name="college_year_array">
+        <item>Choose Year</item>
+        <item>First Year</item>
+        <item>Second Year</item>
+        <item>Third Year</item>
+        <item>Fourth Year</item>
+    </string-array>
+
+    <string-array name="college_department_array">
+        <item>Choose your department</item>
+        <item>CSE</item>
+        <item>EEE</item>
+        <item>ECE</item>
+        <item>MECH</item>
+        <item>CIVIL</item>
+        <item>IT</item>
+    </string-array>
+
+    <string-array name="college_profile_array">
+        <item>Choose profile type</item>
+        <item>Student</item>
+        <item>Admin</item>
+    </string-array>
+    <string name="bonofide">Bonafide Certificate</string>
+    <string name="leave_letter">Leave Letter</string>
+    <string name="food">Order Food</string>
+    <string name="track_bus">Track Your Bus</string>
+    <string name="complaint">Lodge Your Complaint</string>
+</resources>

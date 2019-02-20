@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "912841758307",
+    "firebase_url": "https://saveetha-task-door.firebaseio.com",
+    "project_id": "saveetha-task-door",
+    "storage_bucket": "saveetha-task-door.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912841758307:android:d237d008276277f8",
+        "android_client_info": {
+          "package_name": "com.saveethataskdoor.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912841758307-4iu96sto6lj78qap330uq3gdmjlrb9e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCOeAazHmWgDpa6uNpWETJ0CRKNwv__F0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

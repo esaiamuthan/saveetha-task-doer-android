@@ -1,0 +1,76 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="AppThemeEdit" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary</item>
+        <item name="colorAccent">@color/color_accent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppLoginEditText">
+        <item name="android:textColorHint">@color/light_violet</item>
+        <item name="android:textColor">@color/dark_black</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="AppTheme.Splash.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Splash.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppProfileEditText">
+        <item name="android:textColor">@color/dark_black</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="ThemeEditTextProfile">
+        <item name="colorControlNormal">@color/light_violet</item>
+        <item name="colorControlActivated">@color/dark_black</item>
+    </style>
+
+    <style name="SpinnerEditText">
+        <item name="android:drawableEnd">@drawable/icn_arrow_drop_down</item>
+        <item name="android:textColor">@color/dark_black</item>
+        <item name="android:textColorHint">@color/light_violet</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:clickable">true</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:theme">@style/ThemeEditTextProfile</item>
+    </style>
+
+    <style name="ThemeEditTextConnection">
+        <item name="colorControlNormal">@color/light_violet</item>
+        <item name="colorControlActivated">@color/dark_black</item>
+    </style>
+
+    <style name="toolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/font_20</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/white_tool_bar_title</item>
+    </style>
+
+    <style name="ThemeTextInputLayout" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/light_violet</item>
+        <item name="android:textColor">@color/light_gray</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>
