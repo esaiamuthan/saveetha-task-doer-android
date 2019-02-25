@@ -4,12 +4,12 @@ package com.saveethataskdoor.app.model;
  * Created on 18/2/19.
  */
 public class User {
-    private String name;
-    private String type;
-    private String userId;
-    private String email;
-    private int department;
-    private int year;
+    public String name;
+    public String type;
+    public String userId;
+    public String email;
+    public String department;
+    public long year;
 
     public String getName() {
         return name;
@@ -43,19 +43,19 @@ public class User {
         this.email = email;
     }
 
-    public int getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(int department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 
-    public int getYear() {
+    public long getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(long year) {
         this.year = year;
     }
 }

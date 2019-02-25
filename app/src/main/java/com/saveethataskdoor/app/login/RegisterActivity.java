@@ -24,6 +24,7 @@ import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityRegisterBinding;
 import com.saveethataskdoor.app.home.HomeActivity;
+import com.saveethataskdoor.app.utils.PreferenceManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,10 +117,10 @@ public class RegisterActivity extends BaseActivity {
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("name", binding.etRName.getText().toString());
-        user.put("type", binding.sptRType.getSelectedItemPosition());
+        user.put("type", binding.sptRType.getSelectedItem().toString());
         user.put("userId", binding.etRCollegeId.getText().toString());
         user.put("email", binding.etREmail.getText().toString());
-        user.put("department", binding.etRDepartment.getSelectedItemPosition());
+        user.put("department", binding.etRDepartment.getSelectedItem().toString());
         user.put("year", binding.spYear.getSelectedItemPosition());
 
         // Add a new document with a generated ID
@@ -129,6 +130,8 @@ public class RegisterActivity extends BaseActivity {
                 .set(user)
                 .addOnSuccessListener(documentReference -> {
                     binding.linearProgress.setVisibility(View.GONE);
+                    PreferenceManager.setEmail(binding.etREmail.getText().toString(),
+                            this);
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -194,12 +197,17 @@ public class RegisterActivity extends BaseActivity {
         } else if (!binding.etRPassword.getText().toString().equals(binding.etRCnfPassword.getText().toString())) {
             binding.etRCnfPassword.setError("Password and confirm password not matched");
             validated = false;
-        } else if (binding.etRDepartment.getSelectedItemPosition() == 0) {
-            showMessage("Please select your department");
-            validated = false;
+        } else if (binding.sptRType.getSelectedItemPosition() != 4) {
+            if (binding.etRDepartment.getSelectedItemPosition() == 0) {
+                showMessage("Please select your department");
+                validated = false;
+            }
         } else if (binding.spYear.getSelectedItemPosition() == 0) {
-            showMessage("Please select your year");
-            validated = false;
+            if (binding.sptRType.getSelectedItemPosition() == 1 ||
+                    binding.sptRType.getSelectedItemPosition() == 2) {
+                showMessage("Please select your year");
+                validated = false;
+            }
         }
         return validated;
     }

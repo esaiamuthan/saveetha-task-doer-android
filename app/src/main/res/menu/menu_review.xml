@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_submit"
+        android:icon="@drawable/ic_check"
+        android:title="@string/submit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_print"
+        android:icon="@drawable/ic_print"
+        android:title="@string/print"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+</menu>

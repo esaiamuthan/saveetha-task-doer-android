@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/window_background"
+        tools:context=".leave.LeaveCreateActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".leave.LeaveCreateActivity"
+            tools:showIn="@layout/activity_leave_create">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spLeaveType"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:entries="@array/leave_array"
+                    android:paddingTop="@dimen/spacing_tiny"
+                    android:paddingBottom="@dimen/spacing_normal" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_normal">
+
+                    <EditText
+                        android:id="@+id/etSubject"
+                        style="@style/AppProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="@string/subject"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapSentences"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:paddingTop="@dimen/spacing_tiny"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        app:theme="@style/ThemeEditTextProfile" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tlDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_normal">
+
+                    <EditText
+                        android:id="@+id/etDate"
+                        style="@style/AppProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="@string/date"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:paddingTop="@dimen/spacing_tiny"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        app:theme="@style/ThemeEditTextProfile" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tlStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_normal">
+
+                    <EditText
+                        android:id="@+id/etStartDate"
+                        style="@style/AppProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="@string/start_date"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:paddingTop="@dimen/spacing_tiny"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        app:theme="@style/ThemeEditTextProfile" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tlEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_normal">
+
+                    <EditText
+                        android:id="@+id/etEndDate"
+                        style="@style/AppProfileEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="@string/end_date"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:paddingTop="@dimen/spacing_tiny"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        app:theme="@style/ThemeEditTextProfile" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/scAccept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/accept_to_forward_this_letter_to_class_advisor" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/linearProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ProgressBar
+                style="@style/Base.Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

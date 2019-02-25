@@ -37,28 +37,34 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/etLoginUserName"
-                    style="@style/AppLoginEditText"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_medium"
-                    android:layout_marginEnd="@dimen/spacing_medium"
-                    android:fontFamily="@font/roboto_regular"
-                    android:hint="@string/login_username_label"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:lines="1"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:text=""
-                    app:theme="@style/ThemeEditTextConnection" />
+                    android:layout_marginEnd="@dimen/spacing_medium">
 
-                <RelativeLayout
+                    <EditText
+                        android:id="@+id/etLoginUserName"
+                        style="@style/AppLoginEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="@string/login_username_label"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:lines="1"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:text=""
+                        app:theme="@style/ThemeEditTextConnection" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_medium"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginEnd="@dimen/spacing_medium">
+                    android:layout_marginEnd="@dimen/spacing_medium"
+                    app:passwordToggleEnabled="true">
 
                     <EditText
                         android:id="@+id/etLoginPassword"
@@ -71,26 +77,28 @@
                         android:inputType="textPassword"
                         android:lines="1"
                         android:paddingStart="@dimen/spacing_empty"
-                        android:paddingEnd="@dimen/spacing_extra_huge"
+                        android:paddingEnd="@dimen/spacing_empty"
                         android:paddingBottom="@dimen/spacing_normal"
                         android:text=""
                         app:theme="@style/ThemeEditTextConnection" />
+                </android.support.design.widget.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/tvLoginForgotPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/roboto_light"
-                        android:paddingStart="@dimen/spacing_small"
-                        android:paddingTop="@dimen/spacing_little"
-                        android:paddingEnd="@dimen/spacing_empty"
-                        android:paddingBottom="@dimen/spacing_small"
-                        android:text="@string/login_forget_password_label"
-                        android:textColor="@color/color_primary_dark"
-                        android:textSize="@dimen/font_small"
-                        android:visibility="gone" />
-                </RelativeLayout>
+                <TextView
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/spacing_medium"
+                    android:id="@+id/tvLoginForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:fontFamily="@font/roboto_light"
+                    android:paddingStart="@dimen/spacing_small"
+                    android:paddingTop="@dimen/spacing_little"
+                    android:paddingEnd="@dimen/spacing_empty"
+                    android:paddingBottom="@dimen/spacing_small"
+                    android:text="@string/login_forget_password_label"
+                    android:textColor="@color/color_primary_dark"
+                    android:textSize="@dimen/font_small"
+                    android:visibility="visible" />
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cvLoginConnexion"
@@ -124,7 +132,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:fontFamily="@font/roboto_bold"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:padding="@dimen/spacing_small"
                     android:text="@string/create_account"

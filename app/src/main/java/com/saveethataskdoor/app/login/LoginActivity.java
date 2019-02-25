@@ -11,10 +11,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.saveethataskdoor.app.MainActivity;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityLoginBinding;
+import com.saveethataskdoor.app.home.HODHomeActivity;
 import com.saveethataskdoor.app.home.HomeActivity;
+import com.saveethataskdoor.app.home.PrincipalHomeActivity;
+import com.saveethataskdoor.app.home.StaffHomeActivity;
+import com.saveethataskdoor.app.model.User;
+import com.saveethataskdoor.app.utils.PreferenceManager;
 
 import java.util.Objects;
 
@@ -41,6 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         binding.tvRegister.setOnClickListener(this);
         binding.cvLoginConnexion.setOnClickListener(this);
+        binding.tvLoginForgotPassword.setOnClickListener(this);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -53,6 +61,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 hideKeyboard();
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.tvLoginForgotPassword:
+                hideKeyboard();
+                Intent intentforget = new Intent(LoginActivity.this, ForgetActivity.class);
+                startActivity(intentforget);
                 break;
             case R.id.cvLoginConnexion:
                 hideKeyboard();
@@ -73,10 +86,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Log.d(TAG, "signInWithEmail:success");
 
                         binding.linearProgress.setVisibility(View.GONE);
-                        Intent loginValidateIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                        loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(loginValidateIntent);
-                        finish();
+
+                        FirebaseFirestore.getInstance().collection("saveetha")
+                                .document(Objects.requireNonNull(mAuth.getUid()))
+                                .get().addOnSuccessListener(documentSnapshot -> {
+                            User currentUserInfo = documentSnapshot.toObject(User.class);
+
+                            PreferenceManager.setProfileType(currentUserInfo.getType(), this);
+
+                            if (currentUserInfo.getType().equals("Student")) {
+                                Intent loginValidateIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(loginValidateIntent);
+                            } else if (currentUserInfo.getType().equals("Staff")) {
+                                Intent loginValidateIntent = new Intent(LoginActivity.this, StaffHomeActivity.class);
+                                loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(loginValidateIntent);
+                            } else if (currentUserInfo.getType().equals("HOD")) {
+                                Intent loginValidateIntent = new Intent(LoginActivity.this, HODHomeActivity.class);
+                                loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(loginValidateIntent);
+                            } else if (currentUserInfo.getType().equals("Principal")) {
+                                Intent loginValidateIntent = new Intent(LoginActivity.this, PrincipalHomeActivity.class);
+                                loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(loginValidateIntent);
+                            }
+                            finish();
+                        });
                     } else {
                         binding.linearProgress.setVisibility(View.GONE);
                         // If sign in fails, display a message to the user.

@@ -53,11 +53,40 @@
     <string-array name="college_profile_array">
         <item>Choose profile type</item>
         <item>Student</item>
-        <item>Admin</item>
+        <item>Staff</item>
+        <item>HOD</item>
+        <item>Principal</item>
     </string-array>
+
+    <string-array name="leave_array">
+        <item>Choose leave type</item>
+        <item>Fever</item>
+        <item>Sick</item>
+        <item>Marriage function</item>
+        <item>Vacation</item>
+    </string-array>
+
     <string name="bonofide">Bonafide Certificate</string>
     <string name="leave_letter">Leave Letter</string>
     <string name="food">Order Food</string>
     <string name="track_bus">Track Your Bus</string>
     <string name="complaint">Lodge Your Complaint</string>
+    <string name="n_works_1_place">N Works, 1 Place</string>
+    <string name="title_activity_leave_list">Leave List</string>
+    <string name="title_activity_leave_create">Apply Leave</string>
+    <string name="end_date">End Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="date">Date</string>
+    <string name="accept_to_forward_this_letter_to_class_advisor">Accept to forward this letter to class advisor</string>
+    <string name="subject">Subject</string>
+    <string name="title_activity_staff_home">Staff</string>
+    <string name="title_activity_hodhome">HOD</string>
+    <string name="title_activity_review">Review</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="reject_reason">Reject Reason</string>
+    <string name="logout">Logout</string>
+    <string name="submit">Submit</string>
+    <string name="print">Print</string>
+    <string name="title_activity_principal_home">Principal</string>
 </resources>

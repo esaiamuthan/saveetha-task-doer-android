@@ -20,6 +20,30 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
         <activity
+            android:name=".home.PrincipalHomeActivity"
+            android:label="@string/title_activity_principal_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ReviewActivity"
+            android:label="@string/title_activity_review"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home.HODHomeActivity"
+            android:label="@string/title_activity_hodhome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home.StaffHomeActivity"
+            android:label="@string/title_activity_staff_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".leave.LeaveCreateActivity"
+            android:label="@string/title_activity_leave_create"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".leave.LeaveListActivity"
+            android:label="@string/title_activity_leave_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".home.HomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -37,6 +61,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.ForgetActivity"
+            android:label="Forget Password"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
