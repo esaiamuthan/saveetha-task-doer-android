@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -54,6 +55,27 @@ public class RegisterActivity extends BaseActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        binding.sptRType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 4) {
+                    binding.spYear.setVisibility(View.GONE);
+                    binding.etRDepartment.setVisibility(View.GONE);
+                } else if (position == 3) {
+                    binding.spYear.setVisibility(View.GONE);
+                    binding.etRDepartment.setVisibility(View.VISIBLE);
+                } else {
+                    binding.spYear.setVisibility(View.VISIBLE);
+                    binding.etRDepartment.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
