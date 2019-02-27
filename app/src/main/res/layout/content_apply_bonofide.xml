@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".bonofide.ApplyBonofideActivity"
+        tools:showIn="@layout/activity_apply_bonofide">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_normal">
+
+                <EditText
+                    android:id="@+id/etSubject"
+                    style="@style/AppProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="@string/subject"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:paddingTop="@dimen/spacing_tiny"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    app:theme="@style/ThemeEditTextProfile" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_normal">
+
+                <EditText
+                    android:id="@+id/rtFatherName"
+                    style="@style/AppProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:hint="@string/father_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:paddingTop="@dimen/spacing_tiny"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    app:theme="@style/ThemeEditTextProfile" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

@@ -89,4 +89,7 @@
     <string name="submit">Submit</string>
     <string name="print">Print</string>
     <string name="title_activity_principal_home">Principal</string>
+    <string name="title_activity_bonofide">Bonofide</string>
+    <string name="title_activity_apply_bonofide">Apply Bonofide</string>
+    <string name="father_name">Father Name</string>
 </resources>

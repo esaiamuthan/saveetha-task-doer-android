@@ -20,9 +20,17 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
         <activity
+            android:name=".bonofide.ApplyBonofideActivity"
+            android:label="@string/title_activity_apply_bonofide"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".bonofide.BonofideActivity"
+            android:label="@string/title_activity_bonofide"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".home.PrincipalHomeActivity"
             android:label="@string/title_activity_principal_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ReviewActivity"
             android:label="@string/title_activity_review"

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
+import com.saveethataskdoor.app.bonofide.BonofideActivity;
 import com.saveethataskdoor.app.databinding.ActivityHomeBinding;
 import com.saveethataskdoor.app.leave.LeaveListActivity;
 import com.saveethataskdoor.app.login.LoginActivity;
@@ -32,6 +33,9 @@ public class HomeActivity extends BaseActivity {
 
         binding.contentHome.tvLeaveLetter.setOnClickListener(v -> {
             startActivity(new Intent(this, LeaveListActivity.class));
+        });
+        binding.contentHome.tvBonofide.setOnClickListener(v -> {
+            startActivity(new Intent(this, BonofideActivity.class));
         });
     }
 
