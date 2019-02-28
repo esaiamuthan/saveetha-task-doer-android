@@ -11,6 +11,9 @@ import com.saveethataskdoor.app.home.HODHomeActivity;
 import com.saveethataskdoor.app.home.HomeActivity;
 import com.saveethataskdoor.app.home.PrincipalHomeActivity;
 import com.saveethataskdoor.app.home.StaffHomeActivity;
+import com.saveethataskdoor.app.home.hod.HODActivity;
+import com.saveethataskdoor.app.home.principal.PrincipalActivity;
+import com.saveethataskdoor.app.home.staff.StaffActivity;
 import com.saveethataskdoor.app.login.LoginActivity;
 import com.saveethataskdoor.app.utils.PreferenceManager;
 
@@ -34,15 +37,15 @@ public class MainActivity extends BaseActivity {
                     loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginValidateIntent);
                 } else if (PreferenceManager.getProfileType(this).equals("Staff")) {
-                    Intent loginValidateIntent = new Intent(MainActivity.this, StaffHomeActivity.class);
+                    Intent loginValidateIntent = new Intent(MainActivity.this, StaffActivity.class);
                     loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginValidateIntent);
                 } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-                    Intent loginValidateIntent = new Intent(MainActivity.this, HODHomeActivity.class);
+                    Intent loginValidateIntent = new Intent(MainActivity.this, HODActivity.class);
                     loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginValidateIntent);
                 } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
-                    Intent loginValidateIntent = new Intent(MainActivity.this, PrincipalHomeActivity.class);
+                    Intent loginValidateIntent = new Intent(MainActivity.this, PrincipalActivity.class);
                     loginValidateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginValidateIntent);
                 }

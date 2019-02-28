@@ -36,6 +36,7 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:padding="@dimen/spacing_normal"
+            android:visibility="gone"
             android:weightSum="2">
 
             <RadioButton

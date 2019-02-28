@@ -2,10 +2,12 @@ package com.saveethataskdoor.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityReviewBinding;
-import com.saveethataskdoor.app.login.LoginActivity;
 import com.saveethataskdoor.app.model.Leave;
 import com.saveethataskdoor.app.model.User;
 import com.saveethataskdoor.app.utils.PreferenceManager;
@@ -30,10 +31,6 @@ import com.saveethataskdoor.app.utils.PreferenceManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
-
-import android.print.PrintAttributes;
-import android.print.PrintJob;
-import android.print.PrintManager;
 
 public class ReviewActivity extends BaseActivity {
 
@@ -148,13 +145,24 @@ public class ReviewActivity extends BaseActivity {
         else
             menu.findItem(R.id.action_print).setVisible(false);
 
-        if (leave.getStatus() == 103)
+        if (PreferenceManager.getProfileType(this).equals("Student")) {
             menu.findItem(R.id.action_submit).setVisible(false);
-        else if (leave.getStatus() == 104)
-            menu.findItem(R.id.action_submit).setVisible(false);
-        else
-            menu.findItem(R.id.action_submit).setVisible(true);
-
+        } else if (PreferenceManager.getProfileType(this).equals("Staff")) {
+            if (leave.getStatus() == 100) {
+                menu.findItem(R.id.action_submit).setVisible(true);
+            } else
+                menu.findItem(R.id.action_submit).setVisible(false);
+        } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
+            if (leave.getStatus() == 101) {
+                menu.findItem(R.id.action_submit).setVisible(true);
+            } else
+                menu.findItem(R.id.action_submit).setVisible(false);
+        } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
+            if (leave.getStatus() == 102) {
+                menu.findItem(R.id.action_submit).setVisible(true);
+            } else
+                menu.findItem(R.id.action_submit).setVisible(false);
+        }
         return true;
     }
 

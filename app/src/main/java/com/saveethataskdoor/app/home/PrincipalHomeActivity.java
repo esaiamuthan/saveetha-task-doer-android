@@ -13,9 +13,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.saveethataskdoor.app.OnLeaveClickListener;
 import com.saveethataskdoor.app.R;
@@ -59,7 +61,7 @@ public class PrincipalHomeActivity extends BaseActivity
     public void initUI() {
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // Initialize Firebase Auth
@@ -71,23 +73,10 @@ public class PrincipalHomeActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            case android.R.id.home:
                 finish();
-
                 break;
         }
         return true;
@@ -98,6 +87,7 @@ public class PrincipalHomeActivity extends BaseActivity
         super.onResume();
 
         if (currentUserInfo == null) {
+            binding.linearProgress.setVisibility(View.VISIBLE);
             db.collection("saveetha")
                     .document(Objects.requireNonNull(mAuth.getUid()))
                     .get().addOnSuccessListener(documentSnapshot -> {
@@ -112,6 +102,8 @@ public class PrincipalHomeActivity extends BaseActivity
         db.collection("saveetha")
                 .document("leave_forms")
                 .collection("leave_letters")
+                .whereEqualTo("year", Objects.requireNonNull(getIntent().getExtras()).getInt("year"))
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -127,14 +119,21 @@ public class PrincipalHomeActivity extends BaseActivity
                         Log.d(TAG, "Error getting documents: ", task.getException());
                         leaveListAdapter.notifyData(leaveList);
                     }
+                    binding.linearProgress.setVisibility(View.GONE);
                 });
     }
 
     @Override
     public void onLeaveClick(Leave leave) {
-        Intent intent = new Intent(this, ReviewActivity.class);
-        intent.putExtra("leave", leave);
-        startActivity(intent);
+        if (leave.getStatus() == 100) {
+            Toast.makeText(this, "Waiting for staff approval", Toast.LENGTH_SHORT).show();
+        } else if (leave.getStatus() == 101) {
+            Toast.makeText(this, "Waiting for HOD approval", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(this, ReviewActivity.class);
+            intent.putExtra("leave", leave);
+            startActivity(intent);
+        }
     }
 
 }

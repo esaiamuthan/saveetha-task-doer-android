@@ -13,8 +13,11 @@ import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.bonofide.BonofideActivity;
 import com.saveethataskdoor.app.databinding.ActivityHomeBinding;
+import com.saveethataskdoor.app.food.FoodShopActivity;
+import com.saveethataskdoor.app.food.MyOrderActivity;
 import com.saveethataskdoor.app.leave.LeaveListActivity;
 import com.saveethataskdoor.app.login.LoginActivity;
+import com.saveethataskdoor.app.utils.CommonUtils;
 
 public class HomeActivity extends BaseActivity {
 
@@ -35,7 +38,23 @@ public class HomeActivity extends BaseActivity {
             startActivity(new Intent(this, LeaveListActivity.class));
         });
         binding.contentHome.tvBonofide.setOnClickListener(v -> {
-            startActivity(new Intent(this, BonofideActivity.class));
+            Intent intent = new Intent(this, BonofideActivity.class);
+            intent.putExtra("profile", "student");
+            startActivity(intent);
+        });
+
+        binding.contentHome.tvComplaint.setOnClickListener(v -> {
+            CommonUtils.sendMail(this);
+        });
+        binding.contentHome.tvOrderFood.setOnClickListener(v -> {
+            startActivity(new Intent(this, FoodShopActivity.class));
+        });
+        binding.contentHome.tvMyOrders.setOnClickListener(v -> {
+            startActivity(new Intent(this, MyOrderActivity.class));
+        });
+
+        binding.contentHome.tvTrackBus.setOnClickListener(v -> {
+            CommonUtils.availableSoon(this);
         });
     }
 

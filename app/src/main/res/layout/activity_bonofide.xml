@@ -22,7 +22,9 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_bonofide" />
+        <include
+            android:id="@+id/content_bonofide"
+            layout="@layout/content_bonofide" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -32,6 +34,26 @@
             android:layout_margin="@dimen/fab_margin"
             android:backgroundTint="@color/color_primary"
             app:srcCompat="@drawable/ic_add" />
+
+
+        <LinearLayout
+            android:id="@+id/linearProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ProgressBar
+                style="@style/Base.Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

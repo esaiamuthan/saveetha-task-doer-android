@@ -1,15 +1,18 @@
 package com.saveethataskdoor.app.login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,10 +27,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityRegisterBinding;
+import com.saveethataskdoor.app.home.HODHomeActivity;
 import com.saveethataskdoor.app.home.HomeActivity;
 import com.saveethataskdoor.app.utils.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,6 +46,9 @@ public class RegisterActivity extends BaseActivity {
     private String TAG = RegisterActivity.class.getSimpleName();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    String[] types = new String[4];
+    boolean[] typesSelected = new boolean[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +71,92 @@ public class RegisterActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 4) {
                     binding.spYear.setVisibility(View.GONE);
+                    binding.tlYears.setVisibility(View.GONE);
                     binding.etRDepartment.setVisibility(View.GONE);
                 } else if (position == 3) {
                     binding.spYear.setVisibility(View.GONE);
+                    binding.tlYears.setVisibility(View.GONE);
+                    binding.etRDepartment.setVisibility(View.VISIBLE);
+                } else if (position == 2) {
+                    binding.spYear.setVisibility(View.GONE);
+                    binding.scClassAdviser.setVisibility(View.VISIBLE);
+                    binding.tlYears.setVisibility(View.GONE);
                     binding.etRDepartment.setVisibility(View.VISIBLE);
                 } else {
                     binding.spYear.setVisibility(View.VISIBLE);
+                    binding.tlYears.setVisibility(View.GONE);
                     binding.etRDepartment.setVisibility(View.VISIBLE);
                 }
+                if (position == 2) {
+                    binding.scClassAdviser.setVisibility(View.VISIBLE);
+                } else
+                    binding.scClassAdviser.setVisibility(View.GONE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        binding.scClassAdviser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    binding.tlYears.setVisibility(View.VISIBLE);
+
+                } else {
+                    binding.tlYears.setVisibility(View.GONE);
+
+                }
+            }
+        });
+
+
+        binding.etYears.setOnClickListener(v -> {
+
+            // String array for alert dialog multi choice items
+            types = new String[]{
+                    "First Year",
+                    "Second Year",
+                    "Third Year",
+                    "Fourth Year",
+            };
+
+            // Boolean array for initial selected items
+            typesSelected = new boolean[]{
+                    false, // Red
+                    false, // Green
+                    false, // Blue
+                    false, // Purple
+            };
+
+            final List<String> typesList = Arrays.asList(types);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Please select year")
+                    .setMultiChoiceItems(types, typesSelected, (dialog, which, isChecked) -> {
+
+                        // Update the current focused item's checked status
+                        typesSelected[which] = isChecked;
+
+                        // Get the current focused item
+                        String currentItem = typesList.get(which);
+                    })
+                    .setPositiveButton(android.R.string.ok, (dialog, whichButton) -> {
+                        dialog.dismiss();
+                        StringBuilder content = new StringBuilder();
+                        for (int i = 0; i < typesSelected.length; i++) {
+                            boolean checked = typesSelected[i];
+                            if (checked) {
+                                content.append(typesList.get(i)).append(",");
+                            }
+                        }
+                        if (content.length() > 0)
+                            content = new StringBuilder(content.substring(0, content.length() - 1));
+                        binding.etYears.setText(content.toString());
+                    })
+                    .show();
         });
     }
 
@@ -143,7 +225,25 @@ public class RegisterActivity extends BaseActivity {
         user.put("userId", binding.etRCollegeId.getText().toString());
         user.put("email", binding.etREmail.getText().toString());
         user.put("department", binding.etRDepartment.getSelectedItem().toString());
-        user.put("year", binding.spYear.getSelectedItemPosition());
+
+        ArrayList<Integer> yearArray = new ArrayList<>();
+        if (binding.sptRType.getSelectedItemPosition() == 2) {
+            if (binding.scClassAdviser.isChecked()) {
+                for (int i = 0; i < typesSelected.length; i++) {
+                    boolean checked = typesSelected[i];
+                    if (checked) {
+                        yearArray.add(i + 1);
+                    }
+                }
+            }
+            user.put("yearList", yearArray);
+        } else if (binding.sptRType.getSelectedItemPosition() == 1) {
+            yearArray.add(binding.spYear.getSelectedItemPosition());
+            user.put("yearList", yearArray);
+        } else
+            user.put("yearList", yearArray);
+
+        user.put("classAdviser", binding.scClassAdviser.isChecked());
 
         // Add a new document with a generated ID
 
@@ -219,15 +319,27 @@ public class RegisterActivity extends BaseActivity {
         } else if (!binding.etRPassword.getText().toString().equals(binding.etRCnfPassword.getText().toString())) {
             binding.etRCnfPassword.setError("Password and confirm password not matched");
             validated = false;
-        } else if (binding.sptRType.getSelectedItemPosition() != 4) {
-            if (binding.etRDepartment.getSelectedItemPosition() == 0) {
+        } else if (binding.sptRType.getSelectedItemPosition() == 2) {
+            if (binding.scClassAdviser.isChecked()) {
+                if (binding.etYears.getText().toString().isEmpty()) {
+                    showMessage("Please select year");
+                    validated = false;
+                }
+            } else if (binding.etRDepartment.getSelectedItemPosition() == 0) {
                 showMessage("Please select your department");
                 validated = false;
             }
-        } else if (binding.spYear.getSelectedItemPosition() == 0) {
-            if (binding.sptRType.getSelectedItemPosition() == 1 ||
-                    binding.sptRType.getSelectedItemPosition() == 2) {
+        } else if (binding.sptRType.getSelectedItemPosition() == 1) {
+            if (binding.spYear.getSelectedItemPosition() == 0) {
                 showMessage("Please select your year");
+                validated = false;
+            } else if (binding.etRDepartment.getSelectedItemPosition() == 0) {
+                showMessage("Please select your department");
+                validated = false;
+            }
+        } else if (binding.sptRType.getSelectedItemPosition() != 4) {
+            if (binding.etRDepartment.getSelectedItemPosition() == 0) {
+                showMessage("Please select your department");
                 validated = false;
             }
         }

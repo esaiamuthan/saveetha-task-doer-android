@@ -59,10 +59,13 @@ public class LeaveCreateActivity extends BaseActivity
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        binding.linearProgress.setVisibility(View.VISIBLE);
         db.collection("saveetha")
                 .document(Objects.requireNonNull(mAuth.getUid()))
                 .get().addOnSuccessListener(documentSnapshot -> {
             currentUserInfo = documentSnapshot.toObject(User.class);
+
+            binding.linearProgress.setVisibility(View.GONE);
         });
 
         binding.spLeaveType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -135,7 +138,7 @@ public class LeaveCreateActivity extends BaseActivity
         user.put("name", currentUserInfo.getName());
         user.put("userId", currentUserInfo.getUserId());
         user.put("department", currentUserInfo.getDepartment());
-        user.put("year", currentUserInfo.getYear());
+        user.put("year", currentUserInfo.getYearList().get(0));
         user.put("uId", mAuth.getUid());
 
         user.put("leaveType", binding.spLeaveType.getSelectedItem().toString());
@@ -147,6 +150,7 @@ public class LeaveCreateActivity extends BaseActivity
         user.put("status", 100);
         user.put("rejectedReason", "");
         user.put("rejectedBy", "");
+        user.put("createdAt", System.currentTimeMillis());
 
         // Add a new document with a generated ID
 

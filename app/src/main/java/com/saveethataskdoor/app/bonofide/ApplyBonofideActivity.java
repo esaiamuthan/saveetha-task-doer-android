@@ -29,7 +29,7 @@ public class ApplyBonofideActivity extends BaseActivity {
 
     private FirebaseAuth mAuth;
 
-    private String TAG = BonofideActivity.class.getSimpleName();
+    private String TAG = ApplyBonofideActivity.class.getSimpleName();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -91,10 +91,11 @@ public class ApplyBonofideActivity extends BaseActivity {
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("uId", mAuth.getUid());
+        user.put("status", 100);
         user.put("name", currentUserInfo.getName());
         user.put("collegeId", currentUserInfo.getUserId());
         user.put("department", currentUserInfo.getDepartment());
-        user.put("year", currentUserInfo.getYear());
+        user.put("year", currentUserInfo.getYearList().get(0));
         user.put("subject", binding.contentApplyBonofide.etSubject.getText().toString());
         user.put("fatherName", binding.contentApplyBonofide.rtFatherName.getText().toString());
 

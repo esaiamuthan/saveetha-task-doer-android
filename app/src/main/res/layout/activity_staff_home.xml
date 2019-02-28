@@ -22,8 +22,28 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_staff_home"
-            android:id="@+id/content_staff_home"/>
+        <include
+            android:id="@+id/content_staff_home"
+            layout="@layout/content_staff_home" />
 
+
+        <LinearLayout
+            android:id="@+id/linearProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ProgressBar
+                style="@style/Base.Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

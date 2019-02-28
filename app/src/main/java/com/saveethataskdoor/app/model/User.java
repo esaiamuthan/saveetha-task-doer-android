@@ -1,5 +1,7 @@
 package com.saveethataskdoor.app.model;
 
+import java.util.ArrayList;
+
 /**
  * Created on 18/2/19.
  */
@@ -9,7 +11,8 @@ public class User {
     public String userId;
     public String email;
     public String department;
-    public long year;
+    public ArrayList<Integer> yearList;
+    public boolean classAdviser = false;
 
     public String getName() {
         return name;
@@ -51,11 +54,19 @@ public class User {
         this.department = department;
     }
 
-    public long getYear() {
-        return year;
+    public ArrayList<Integer> getYearList() {
+        return yearList;
     }
 
-    public void setYear(long year) {
-        this.year = year;
+    public void setYearList(ArrayList<Integer> yearList) {
+        this.yearList = yearList;
+    }
+
+    public boolean isClassAdviser() {
+        return classAdviser;
+    }
+
+    public void setClassAdviser(boolean classAdviser) {
+        this.classAdviser = classAdviser;
     }
 }

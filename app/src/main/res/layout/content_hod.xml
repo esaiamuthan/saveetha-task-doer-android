@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".home.hod.HODActivity"
+        tools:showIn="@layout/activity_hod">
+
+
+        <TextView
+            android:id="@+id/tvLeaveLetter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@color/color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/leave_letter"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/tvOrderFood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@color/color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/food"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/tvTrackBus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@color/color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/track_bus"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/tvComplaint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@color/color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/complaint"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+
+        <TextView
+            android:id="@+id/tvMyOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="@color/color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_medium"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/my_order"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_medium" />
+    </LinearLayout>
+</layout>

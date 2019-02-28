@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.saveethataskdoor.app.OnLeaveClickListener;
 import com.saveethataskdoor.app.R;
@@ -38,7 +39,7 @@ public class HODHomeActivity extends BaseActivity
 
     private FirebaseAuth mAuth;
 
-    private String TAG = StaffHomeActivity.class.getSimpleName();
+    private String TAG = HODHomeActivity.class.getSimpleName();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -60,7 +61,7 @@ public class HODHomeActivity extends BaseActivity
     public void initUI() {
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // Initialize Firebase Auth
@@ -72,23 +73,10 @@ public class HODHomeActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(HODHomeActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            case android.R.id.home:
                 finish();
-
                 break;
         }
         return true;
@@ -98,6 +86,8 @@ public class HODHomeActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         if (currentUserInfo == null) {
+            binding.linearProgress.setVisibility(View.VISIBLE);
+
             db.collection("saveetha")
                     .document(Objects.requireNonNull(mAuth.getUid()))
                     .get().addOnSuccessListener(documentSnapshot -> {
@@ -113,6 +103,8 @@ public class HODHomeActivity extends BaseActivity
                 .document("leave_forms")
                 .collection("leave_letters")
                 .whereEqualTo("department", currentUserInfo.getDepartment())
+                .whereEqualTo("year", Objects.requireNonNull(getIntent().getExtras()).getInt("year"))
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -128,6 +120,7 @@ public class HODHomeActivity extends BaseActivity
                         Log.d(TAG, "Error getting documents: ", task.getException());
                         leaveListAdapter.notifyData(leaveList);
                     }
+                    binding.linearProgress.setVisibility(View.GONE);
                 });
     }
 

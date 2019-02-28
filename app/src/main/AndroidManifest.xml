@@ -20,40 +20,84 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
         <activity
+            android:name=".bonofide.BonofideReviewActivity"
+            android:label="@string/title_activity_bonofide_review"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".food.MyOrderActivity"
+            android:label="@string/title_activity_my_order"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".food.CartActivity"
+            android:label="@string/title_activity_cart"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".food.ProductActivity"
+            android:label="@string/title_activity_product"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home.principal.PrincipalActivity"
+            android:label="@string/title_activity_principal"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home.hod.HODActivity"
+            android:label="@string/title_activity_hod"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".food.FoodShopActivity"
+            android:label="@string/title_activity_food_shop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home.staff.StaffActivity"
+            android:label="@string/title_activity_staff"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".bonofide.ApplyBonofideActivity"
             android:label="@string/title_activity_apply_bonofide"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bonofide.BonofideActivity"
             android:label="@string/title_activity_bonofide"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".home.PrincipalHomeActivity"
             android:label="@string/title_activity_principal_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ReviewActivity"
             android:label="@string/title_activity_review"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".home.HODHomeActivity"
             android:label="@string/title_activity_hodhome"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".home.StaffHomeActivity"
             android:label="@string/title_activity_staff_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".leave.LeaveCreateActivity"
             android:label="@string/title_activity_leave_create"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".leave.LeaveListActivity"
             android:label="@string/title_activity_leave_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".home.HomeActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -69,7 +113,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login.ForgetActivity"
-            android:label="Forget Password"
+            android:label="@string/forget_password"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">

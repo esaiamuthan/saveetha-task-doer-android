@@ -19,6 +19,7 @@ public class Leave implements Serializable {
     public long status;
     public String rejectedBy;
     public String rejectedReason;
+    public long createdAt;
 
     public String getDocumentId() {
         return documentId;
@@ -130,5 +131,13 @@ public class Leave implements Serializable {
 
     public void setRejectedReason(String rejectedReason) {
         this.rejectedReason = rejectedReason;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 }

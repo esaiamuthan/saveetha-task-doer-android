@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.saveethataskdoor.app.OnLeaveClickListener;
@@ -64,8 +65,7 @@ public class StaffHomeActivity extends BaseActivity
     public void initUI() {
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -76,23 +76,10 @@ public class StaffHomeActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(StaffHomeActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            case android.R.id.home:
                 finish();
-
                 break;
         }
         return true;
@@ -103,6 +90,7 @@ public class StaffHomeActivity extends BaseActivity
         super.onResume();
 
         if (currentUserInfo == null) {
+            binding.linearProgress.setVisibility(View.VISIBLE);
             db.collection("saveetha")
                     .document(Objects.requireNonNull(mAuth.getUid()))
                     .get().addOnSuccessListener(documentSnapshot -> {
@@ -114,11 +102,13 @@ public class StaffHomeActivity extends BaseActivity
     }
 
     private void getLeaveList() {
+        binding.linearProgress.setVisibility(View.VISIBLE);
         db.collection("saveetha")
                 .document("leave_forms")
                 .collection("leave_letters")
                 .whereEqualTo("department", currentUserInfo.getDepartment())
-                .whereEqualTo("year", currentUserInfo.getYear())
+                .whereEqualTo("year", Objects.requireNonNull(getIntent().getExtras()).getInt("year"))
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -134,6 +124,7 @@ public class StaffHomeActivity extends BaseActivity
                         Log.d(TAG, "Error getting documents: ", task.getException());
                         leaveListAdapter.notifyData(leaveList);
                     }
+                    binding.linearProgress.setVisibility(View.GONE);
                 });
     }
 
