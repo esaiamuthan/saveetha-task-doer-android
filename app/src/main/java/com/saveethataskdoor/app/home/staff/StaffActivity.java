@@ -1,14 +1,10 @@
 package com.saveethataskdoor.app.home.staff;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +12,7 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityStaffBinding;
@@ -26,6 +23,8 @@ import com.saveethataskdoor.app.login.LoginActivity;
 import com.saveethataskdoor.app.model.User;
 import com.saveethataskdoor.app.utils.CommonUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class StaffActivity extends BaseActivity {
@@ -37,6 +36,7 @@ public class StaffActivity extends BaseActivity {
 
     String[] yearsArray = new String[0];
     Integer[] yearsIntArray = new Integer[0];
+    private static final String TAG = StaffActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,8 @@ public class StaffActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_staff);
         initUI();
 
+
+        getFirebaseToken();
     }
 
     @Override
@@ -140,4 +142,51 @@ public class StaffActivity extends BaseActivity {
         return true;
     }
 
+
+    private void getFirebaseToken() {
+
+        // Get token
+        // [START retrieve_current_token]
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+
+                    // Log and toast
+                    String msg = getString(R.string.app_name, token);
+                    Log.d(TAG, msg);
+
+                    if (currentUserInfo == null) {
+                        db.collection("saveetha")
+                                .document(Objects.requireNonNull(mAuth.getUid()))
+                                .get().addOnSuccessListener(documentSnapshot -> {
+                            currentUserInfo = documentSnapshot.toObject(User.class);
+                            storeToken(token);
+                        });
+                    }
+                });
+        // [END retrieve_current_token]
+    }
+
+    private void storeToken(String token) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("token", token);
+        user.put("name", currentUserInfo.getName());
+        user.put("userId", currentUserInfo.getUserId());
+        user.put("department", currentUserInfo.getDepartment());
+        user.put("year", currentUserInfo.getYearList().get(0));
+        user.put("uId", mAuth.getUid());
+
+        user.put("createdAt", System.currentTimeMillis());
+
+        db.collection("tokens")
+                .add(user)
+                .addOnSuccessListener(task -> {
+        });
+    }
 }

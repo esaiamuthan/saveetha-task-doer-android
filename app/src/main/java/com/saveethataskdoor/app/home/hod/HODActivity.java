@@ -8,12 +8,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityHodBinding;
@@ -22,19 +25,28 @@ import com.saveethataskdoor.app.food.MyOrderActivity;
 import com.saveethataskdoor.app.home.HODHomeActivity;
 import com.saveethataskdoor.app.home.StaffHomeActivity;
 import com.saveethataskdoor.app.login.LoginActivity;
+import com.saveethataskdoor.app.model.User;
 import com.saveethataskdoor.app.utils.CommonUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class HODActivity extends BaseActivity {
 
     ActivityHodBinding binding;
+    private static final String TAG = HODActivity.class.getSimpleName();
+    private User currentUserInfo;
+    private FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hod);
         initUI();
+
+        getFirebaseToken();
     }
 
 
@@ -42,6 +54,7 @@ public class HODActivity extends BaseActivity {
     public void initUI() {
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        mAuth = FirebaseAuth.getInstance();
 
         binding.contentHod.tvLeaveLetter.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
@@ -94,5 +107,53 @@ public class HODActivity extends BaseActivity {
                 break;
         }
         return true;
+    }
+
+    private void getFirebaseToken() {
+
+        // Get token
+        // [START retrieve_current_token]
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+
+                    // Log and toast
+                    String msg = getString(R.string.app_name, token);
+                    Log.d(TAG, msg);
+
+
+                    if (currentUserInfo == null) {
+                        db.collection("saveetha")
+                                .document(Objects.requireNonNull(mAuth.getUid()))
+                                .get().addOnSuccessListener(documentSnapshot -> {
+                            currentUserInfo = documentSnapshot.toObject(User.class);
+                            storeToken(token);
+                        });
+                    }
+                });
+        // [END retrieve_current_token]
+    }
+
+    private void storeToken(String token) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("token", token);
+        user.put("name", currentUserInfo.getName());
+        user.put("userId", currentUserInfo.getUserId());
+        user.put("department", currentUserInfo.getDepartment());
+        user.put("year", currentUserInfo.getYearList().get(0));
+        user.put("uId", mAuth.getUid());
+
+        user.put("createdAt", System.currentTimeMillis());
+
+        db.collection("tokens")
+                .add(user)
+                .addOnSuccessListener(task -> {
+                });
     }
 }
