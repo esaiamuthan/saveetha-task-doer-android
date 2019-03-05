@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
@@ -20,6 +22,7 @@ import com.saveethataskdoor.app.food.FoodShopActivity;
 import com.saveethataskdoor.app.food.MyOrderActivity;
 import com.saveethataskdoor.app.home.StaffHomeActivity;
 import com.saveethataskdoor.app.login.LoginActivity;
+import com.saveethataskdoor.app.model.Token;
 import com.saveethataskdoor.app.model.User;
 import com.saveethataskdoor.app.utils.CommonUtils;
 
@@ -179,14 +182,38 @@ public class StaffActivity extends BaseActivity {
         user.put("name", currentUserInfo.getName());
         user.put("userId", currentUserInfo.getUserId());
         user.put("department", currentUserInfo.getDepartment());
-        user.put("year", currentUserInfo.getYearList().get(0));
+        user.put("year", currentUserInfo.getYearList());
         user.put("uId", mAuth.getUid());
 
         user.put("createdAt", System.currentTimeMillis());
 
         db.collection("tokens")
-                .add(user)
-                .addOnSuccessListener(task -> {
-        });
+                .whereEqualTo("uId", mAuth.getUid())
+                .orderBy("createdAt", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        db.collection("tokens")
+                                .add(user)
+                                .addOnSuccessListener(taskNew -> {
+                                });
+                    } else {
+                        Token leave = null;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            leave = document.toObject(Token.class);
+                            leave.setDocumentid(document.getId());
+
+                            db.collection("tokens")
+                                    .document(leave.getDocumentid())
+                                    .set(user)
+                                    .addOnSuccessListener(taskNew -> {
+                                    });
+                            break;
+                        }
+                    }
+
+                });
     }
 }

@@ -28,8 +28,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+import com.saveethataskdoor.app.PushNotifictionHelper;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.utils.CustomTypefaceSpan;
+
+import java.io.IOException;
 
 public class BaseActivity extends AppCompatActivity implements com.saveethataskdoor.app.base.IBaseView, com.saveethataskdoor.app.base.BaseFragment.Callback {
     protected final int NO_COLOR = -1;
@@ -220,7 +226,6 @@ public class BaseActivity extends AppCompatActivity implements com.saveethataskd
     }
 
 
-
     private RequestListener<Drawable> getListener(GlideListener glideListener) {
         return new RequestListener<Drawable>() {
             @Override
@@ -255,5 +260,14 @@ public class BaseActivity extends AppCompatActivity implements com.saveethataskd
         }
     }
 
+
+    public void sendNotification() {
+        try {
+            PushNotifictionHelper.sendPushNotification("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
