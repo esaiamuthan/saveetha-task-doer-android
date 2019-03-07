@@ -128,7 +128,6 @@ public class HODActivity extends BaseActivity {
                     // Get new Instance ID token
                     String token = task.getResult().getToken();
 
-
                     if (currentUserInfo == null) {
                         db.collection("saveetha")
                                 .document(Objects.requireNonNull(mAuth.getUid()))
@@ -144,6 +143,7 @@ public class HODActivity extends BaseActivity {
     private void storeToken(String token) {
         Map<String, Object> user = new HashMap<>();
         user.put("token", token);
+        user.put("type", currentUserInfo.getType());
         user.put("name", currentUserInfo.getName());
         user.put("userId", currentUserInfo.getUserId());
         user.put("department", currentUserInfo.getDepartment());
@@ -153,32 +153,14 @@ public class HODActivity extends BaseActivity {
         user.put("createdAt", System.currentTimeMillis());
 
         db.collection("tokens")
-                .whereEqualTo("uId", mAuth.getUid())
-                .orderBy("createdAt", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        db.collection("tokens")
-                                .add(user)
-                                .addOnSuccessListener(taskNew -> {
-                                });
-                    } else {
-                        Token leave = null;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
-                            leave = document.toObject(Token.class);
-                            leave.setDocumentid(document.getId());
+                .document(mAuth.getUid())
+                .set(user)
+                .addOnCompleteListener(taskNew -> {
+                    Log.w(TAG, "getInstanceId failed" + taskNew);
 
-                            db.collection("tokens")
-                                    .document(leave.getDocumentid())
-                                    .set(user)
-                                    .addOnSuccessListener(taskNew -> {
-                                    });
-                            break;
-                        }
-                    }
-
-                });
+                })
+                .addOnFailureListener(tasknew -> {
+                    Log.w(TAG, "getInstanceId failed" + tasknew);
+                });;
     }
 }

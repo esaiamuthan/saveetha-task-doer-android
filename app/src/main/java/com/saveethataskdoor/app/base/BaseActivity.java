@@ -1,5 +1,6 @@
 package com.saveethataskdoor.app.base;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -33,6 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.saveethataskdoor.app.PushNotifictionHelper;
 import com.saveethataskdoor.app.R;
+import com.saveethataskdoor.app.model.Leave;
 import com.saveethataskdoor.app.utils.CustomTypefaceSpan;
 
 import java.io.IOException;
@@ -261,13 +264,37 @@ public class BaseActivity extends AppCompatActivity implements com.saveethataskd
     }
 
 
-    public void sendNotification() {
-        try {
-            PushNotifictionHelper.sendPushNotification("");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @SuppressLint("StaticFieldLeak")
+    public void sendNotification(String token, Leave leave) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
 
+                    PushNotifictionHelper.sendPushNotification(token, leave);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    public void sendNotification(String token) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+
+                    PushNotifictionHelper.sendPushNotification(token,null);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
 }

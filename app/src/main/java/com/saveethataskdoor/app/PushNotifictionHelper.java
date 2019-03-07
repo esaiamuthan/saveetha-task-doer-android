@@ -1,5 +1,7 @@
 package com.saveethataskdoor.app;
 
+import com.saveethataskdoor.app.model.Leave;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +18,7 @@ public class PushNotifictionHelper {
     public final static String AUTH_KEY_FCM = "AIzaSyAEPsewyx7cgArvgiO-ew0-jT-bWGgpMhk";
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
-    public static String sendPushNotification(String deviceToken)
+    public static String sendPushNotification(String deviceToken, Leave leave)
             throws IOException {
         String result = "";
         URL url = new URL(API_URL_FCM);
@@ -44,7 +46,8 @@ public class PushNotifictionHelper {
             e.printStackTrace();
         }
         try {
-            info.put("body", "message body"); // Notification
+            if (leave != null)
+                info.put("body", "Leave request from " + leave.getName()); // Notification
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -74,45 +77,6 @@ public class PushNotifictionHelper {
             result = "Failure";
         }
         System.out.println("GCM Notification is sent successfully");
-
         return result;
-    }
-
-    public void sendAndroidPush(String input) {
-        final String apiKey = "AIzaSyAEPsewyx7cgArvgiO-ew0-jT-bWGgpMhk";
-        StringBuffer response = new StringBuffer();
-        try {
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "key=" + apiKey);
-
-            conn.setDoOutput(true);
-
-            OutputStream os = conn.getOutputStream();
-            os.write(input.getBytes());
-            os.flush();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Post parameters : " + input);
-            System.out.println("Response Code : " + responseCode);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        // print result
-        System.out.println(response.toString());
     }
 }

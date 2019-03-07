@@ -3,6 +3,7 @@ package com.saveethataskdoor.app.leave;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,11 +19,25 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.saveethataskdoor.app.PushNotifictionHelper;
 import com.saveethataskdoor.app.R;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityLeaveCreateBinding;
+import com.saveethataskdoor.app.model.Leave;
+import com.saveethataskdoor.app.model.Token;
 import com.saveethataskdoor.app.model.User;
+import com.saveethataskdoor.app.utils.PreferenceManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,6 +175,9 @@ public class LeaveCreateActivity extends BaseActivity
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
                     binding.linearProgress.setVisibility(View.GONE);
+
+                    sendPush();
+
                     finish();
                 })
                 .addOnFailureListener(throable -> {
@@ -181,6 +199,25 @@ public class LeaveCreateActivity extends BaseActivity
                     } catch (Exception e) {
                         Toast.makeText(LeaveCreateActivity.this, "" + e.getMessage(),
                                 Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void sendPush() {
+        db.collection("tokens")
+                .whereEqualTo("type", "Staff")
+                .whereEqualTo("department", currentUserInfo.getDepartment())
+                .whereArrayContains("year", currentUserInfo.getYearList().get(0))
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+
+                        sendNotification(token.getToken());
+
+                        break;
                     }
                 });
     }
@@ -247,5 +284,96 @@ public class LeaveCreateActivity extends BaseActivity
         } else if (dateType.equals("end_date")) {
             binding.etEndDate.setText(dateFormat);
         }
+    }
+
+    public final static String AUTH_KEY_FCM = "AIzaSyAEPsewyx7cgArvgiO-ew0-jT-bWGgpMhk";
+    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
+
+    public String sendPushNotification(String deviceToken, Leave leave)
+            throws IOException {
+        String result = "";
+        URL url = new URL(API_URL_FCM);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setUseCaches(false);
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "key=" + AUTH_KEY_FCM);
+        conn.setRequestProperty("Content-Type", "application/json");
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("to", deviceToken.trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject info = new JSONObject();
+        try {
+            info.put("title", "notification title"); // Notification title
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            String year = "";
+            if (currentUserInfo.getYearList().get(0) == 1)
+                year = currentUserInfo.getYearList().get(0) + "st year";
+            else if (currentUserInfo.getYearList().get(0) == 2)
+                year = currentUserInfo.getYearList().get(0) + "nd year";
+            else if (currentUserInfo.getYearList().get(0) == 3)
+                year = currentUserInfo.getYearList().get(0) + "rd year";
+            else if (currentUserInfo.getYearList().get(0) == 4)
+                year = currentUserInfo.getYearList().get(0) + "th year";
+
+            info.put("body", "Leave request from " + currentUserInfo.getName() + " " + year); // Notification
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // body
+        try {
+            json.put("notification", info);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            OutputStreamWriter wr = new OutputStreamWriter(
+                    conn.getOutputStream());
+            wr.write(json.toString());
+            wr.flush();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+
+            String output;
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+            result = "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "Failure";
+        }
+        System.out.println("GCM Notification is sent successfully");
+        return result;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void sendNotification(String token) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+
+                    sendPushNotification(token,null);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 }

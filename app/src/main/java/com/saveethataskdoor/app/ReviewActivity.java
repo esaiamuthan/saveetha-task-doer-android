@@ -22,9 +22,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.saveethataskdoor.app.base.BaseActivity;
 import com.saveethataskdoor.app.databinding.ActivityReviewBinding;
 import com.saveethataskdoor.app.model.Leave;
+import com.saveethataskdoor.app.model.Token;
 import com.saveethataskdoor.app.model.User;
 import com.saveethataskdoor.app.utils.PreferenceManager;
 
@@ -247,6 +249,9 @@ public class ReviewActivity extends BaseActivity {
                 .set(leave)
                 .addOnSuccessListener(documentReference -> {
                     binding.linearProgress.setVisibility(View.GONE);
+
+                    setPush(leave);
+
                     finish();
                 })
                 .addOnFailureListener(throable -> {
@@ -270,6 +275,28 @@ public class ReviewActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void setPush(Leave leave) {
+        if (PreferenceManager.getProfileType(this).equals("Staff")) {
+
+            db.collection("tokens")
+                    .whereEqualTo("type", PreferenceManager.getProfileType(this))
+                    .whereEqualTo("department", leave.getDepartment())
+                    .whereArrayContains("year", leave.getYear())
+                    .limit(1)
+                    .get().addOnCompleteListener(task -> {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Log.d(TAG, document.getId() + " => " + document.getData());
+                    Token token = document.toObject(Token.class);
+
+                    sendNotification(token.getToken(), leave);
+                }
+            });
+
+        } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
+        } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
+        }
     }
 
     private void loadContent() {
