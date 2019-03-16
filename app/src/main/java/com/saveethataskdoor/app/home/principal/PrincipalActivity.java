@@ -98,6 +98,7 @@ public class PrincipalActivity extends BaseActivity {
         binding.contentPrincipal.tvOrderFood.setOnClickListener(v -> {
             startActivity(new Intent(this, FoodShopActivity.class));
         });
+        binding.contentPrincipal.tvMyOrders.setVisibility(View.GONE);
         binding.contentPrincipal.tvMyOrders.setOnClickListener(v -> {
             startActivity(new Intent(this, MyOrderActivity.class));
         });
@@ -114,12 +115,21 @@ public class PrincipalActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
+                db.collection("tokens")
+                        .document(Objects.requireNonNull(mAuth.getUid()))
+                        .delete()
+                        .addOnCompleteListener(taskNew -> {
+                            Log.w(TAG, "getInstanceId failed" + taskNew);
+                            FirebaseAuth.getInstance().signOut();
 
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(tasknew -> {
+                            Log.w(TAG, "getInstanceId failed" + tasknew);
+                        });
 
                 break;
         }
@@ -141,8 +151,7 @@ public class PrincipalActivity extends BaseActivity {
                     String token = task.getResult().getToken();
 
                     // Log and toast
-                    String msg = getString(R.string.app_name, token);
-                    Log.d(TAG, msg);
+                    Log.d(TAG, token);
 
 
                     if (currentUserInfo == null) {

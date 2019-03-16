@@ -281,14 +281,15 @@ public class BaseActivity extends AppCompatActivity implements com.saveethataskd
         }.execute();
     }
 
+
     @SuppressLint("StaticFieldLeak")
-    public void sendNotification(String token) {
+    public void sendNotification(String token, String message) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
 
-                    PushNotifictionHelper.sendPushNotification(token,null);
+                    PushNotifictionHelper.sendPushNotification(token, message);
 
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -83,6 +83,7 @@ public class HODActivity extends BaseActivity {
         binding.contentHod.tvOrderFood.setOnClickListener(v -> {
             startActivity(new Intent(this, FoodShopActivity.class));
         });
+        binding.contentHod.tvMyOrders.setVisibility(View.GONE);
         binding.contentHod.tvMyOrders.setOnClickListener(v -> {
             startActivity(new Intent(this, MyOrderActivity.class));
         });
@@ -102,12 +103,21 @@ public class HODActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
+                db.collection("tokens")
+                        .document(Objects.requireNonNull(mAuth.getUid()))
+                        .delete()
+                        .addOnCompleteListener(taskNew -> {
+                            Log.w(TAG, "getInstanceId failed" + taskNew);
+                            FirebaseAuth.getInstance().signOut();
 
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(tasknew -> {
+                            Log.w(TAG, "getInstanceId failed" + tasknew);
+                        });
 
                 break;
         }
@@ -127,6 +137,8 @@ public class HODActivity extends BaseActivity {
 
                     // Get new Instance ID token
                     String token = task.getResult().getToken();
+
+                    Log.d(TAG, token);
 
                     if (currentUserInfo == null) {
                         db.collection("saveetha")
@@ -161,6 +173,7 @@ public class HODActivity extends BaseActivity {
                 })
                 .addOnFailureListener(tasknew -> {
                     Log.w(TAG, "getInstanceId failed" + tasknew);
-                });;
+                });
+        ;
     }
 }

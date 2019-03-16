@@ -5,6 +5,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -61,6 +63,9 @@ public class FoodShopActivity extends BaseActivity implements OnStoreClickListen
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.action_my_orders:
+                startActivity(new Intent(this, MyOrderActivity.class));
+                break;
         }
         return true;
     }
@@ -92,5 +97,13 @@ public class FoodShopActivity extends BaseActivity implements OnStoreClickListen
         Intent intent = new Intent(this, ProductActivity.class);
         intent.putExtra("store", store);
         startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_orders, menu);
+        return true;
     }
 }

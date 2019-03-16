@@ -2,6 +2,7 @@ package com.saveethataskdoor.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -53,8 +54,6 @@ public class ReviewActivity extends BaseActivity {
     Calendar calendar;
     String dateFormat = "";
 
-    private ArrayList<PrintJob> mPrintJobs = new ArrayList<PrintJob>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,46 +93,66 @@ public class ReviewActivity extends BaseActivity {
             handleViews();
         });
 
-        binding.contentReview.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.accept) {
-                    binding.contentReview.etRejectReason.setVisibility(View.GONE);
-                } else if (checkedId == R.id.reject) {
-                    binding.contentReview.etRejectReason.setVisibility(View.VISIBLE);
-                }
+        binding.contentReview.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.accept) {
+                binding.contentReview.etRejectReason.setVisibility(View.GONE);
+            } else if (checkedId == R.id.reject) {
+                binding.contentReview.etRejectReason.setVisibility(View.VISIBLE);
             }
         });
 
-        if (leave.getLeaveType().equals("Fever")) {
-            loadContentFever();
-        } else if (leave.getLeaveType().equals("Sick")) {
-            loadContentSick();
-        } else if (leave.getLeaveType().equals("Marriage function")) {
-            loadContent();
-        } else if (leave.getLeaveType().equals("Vacation")) {
-            loadContentVacation();
+        switch (leave.getLeaveType()) {
+            case "Fever":
+                loadContentFever();
+                break;
+            case "Sick":
+                loadContentSick();
+                break;
+            case "Marriage function":
+                loadContent();
+                break;
+            case "Vacation":
+                loadContentVacation();
+                break;
         }
+
+        if (leave.getFileURI() != null) {
+            binding.contentReview.tvFile.setVisibility(View.VISIBLE);
+        } else {
+            binding.contentReview.tvFile.setVisibility(View.GONE);
+        }
+
+        binding.contentReview.tvFile.setOnClickListener(v -> {
+            Intent intent
+                    = new Intent(this, WebActivity.class);
+            intent.putExtra("url", leave.getFileURI());
+            startActivity(intent);
+        });
     }
 
     private void handleViews() {
-        if (PreferenceManager.getProfileType(this).equals("Student")) {
-            binding.contentReview.radioGroup.setVisibility(View.GONE);
-        } else if (PreferenceManager.getProfileType(this).equals("Staff")) {
-            if (leave.getStatus() == 104 || leave.getStatus() == 101)
+        switch (PreferenceManager.getProfileType(this)) {
+            case "Student":
                 binding.contentReview.radioGroup.setVisibility(View.GONE);
-            else
-                binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
-        } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-            if (leave.getStatus() == 104 || leave.getStatus() == 102)
-                binding.contentReview.radioGroup.setVisibility(View.GONE);
-            else
-                binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
-        } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
-            if (leave.getStatus() == 104 || leave.getStatus() == 103)
-                binding.contentReview.radioGroup.setVisibility(View.GONE);
-            else if (leave.getStatus() == 102)
-                binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
+                break;
+            case "Staff":
+                if (leave.getStatus() == 104 || leave.getStatus() == 101)
+                    binding.contentReview.radioGroup.setVisibility(View.GONE);
+                else
+                    binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
+                break;
+            case "HOD":
+                if (leave.getStatus() == 104 || leave.getStatus() == 102)
+                    binding.contentReview.radioGroup.setVisibility(View.GONE);
+                else
+                    binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
+                break;
+            case "Principal":
+                if (leave.getStatus() == 104 || leave.getStatus() == 103)
+                    binding.contentReview.radioGroup.setVisibility(View.GONE);
+                else if (leave.getStatus() == 102)
+                    binding.contentReview.radioGroup.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -147,23 +166,28 @@ public class ReviewActivity extends BaseActivity {
         else
             menu.findItem(R.id.action_print).setVisible(false);
 
-        if (PreferenceManager.getProfileType(this).equals("Student")) {
-            menu.findItem(R.id.action_submit).setVisible(false);
-        } else if (PreferenceManager.getProfileType(this).equals("Staff")) {
-            if (leave.getStatus() == 100) {
-                menu.findItem(R.id.action_submit).setVisible(true);
-            } else
+        switch (PreferenceManager.getProfileType(this)) {
+            case "Student":
                 menu.findItem(R.id.action_submit).setVisible(false);
-        } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-            if (leave.getStatus() == 101) {
-                menu.findItem(R.id.action_submit).setVisible(true);
-            } else
-                menu.findItem(R.id.action_submit).setVisible(false);
-        } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
-            if (leave.getStatus() == 102) {
-                menu.findItem(R.id.action_submit).setVisible(true);
-            } else
-                menu.findItem(R.id.action_submit).setVisible(false);
+                break;
+            case "Staff":
+                if (leave.getStatus() == 100) {
+                    menu.findItem(R.id.action_submit).setVisible(true);
+                } else
+                    menu.findItem(R.id.action_submit).setVisible(false);
+                break;
+            case "HOD":
+                if (leave.getStatus() == 101) {
+                    menu.findItem(R.id.action_submit).setVisible(true);
+                } else
+                    menu.findItem(R.id.action_submit).setVisible(false);
+                break;
+            case "Principal":
+                if (leave.getStatus() == 102) {
+                    menu.findItem(R.id.action_submit).setVisible(true);
+                } else
+                    menu.findItem(R.id.action_submit).setVisible(false);
+                break;
         }
         return true;
     }
@@ -222,23 +246,31 @@ public class ReviewActivity extends BaseActivity {
         binding.linearProgress.setVisibility(View.VISIBLE);
 
         if (isAccepted) {
-            if (PreferenceManager.getProfileType(this).equals("Staff")) {
-                leave.setStatus(101);
-            } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-                leave.setStatus(102);
-            } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
-                leave.setStatus(103);
+            switch (PreferenceManager.getProfileType(this)) {
+                case "Staff":
+                    leave.setStatus(101);
+                    break;
+                case "HOD":
+                    leave.setStatus(102);
+                    break;
+                case "Principal":
+                    leave.setStatus(103);
+                    break;
             }
         } else {
             leave.setStatus(104);
             leave.setRejectedReason(binding.contentReview.etRejectReason.getText().toString());
 
-            if (PreferenceManager.getProfileType(this).equals("Staff")) {
-                leave.setRejectedBy("Staff");
-            } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-                leave.setRejectedBy("HOD");
-            } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
-                leave.setRejectedBy("Principal");
+            switch (PreferenceManager.getProfileType(this)) {
+                case "Staff":
+                    leave.setRejectedBy("Staff");
+                    break;
+                case "HOD":
+                    leave.setRejectedBy("HOD");
+                    break;
+                case "Principal":
+                    leave.setRejectedBy("Principal");
+                    break;
             }
         }
 
@@ -278,24 +310,132 @@ public class ReviewActivity extends BaseActivity {
     }
 
     private void setPush(Leave leave) {
-        if (PreferenceManager.getProfileType(this).equals("Staff")) {
+        switch (PreferenceManager.getProfileType(this)) {
+            case "Staff":
+                db.collection("tokens")
+                        .whereEqualTo("uId", leave.getuId())
+                        .whereEqualTo("type", "Student")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .whereArrayContains("year", leave.getYear())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by Staff \n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Request forwarded to HOD");
+                    }
+                });
+                if (leave.getStatus() != 104)
+                    db.collection("tokens")
+                            .whereEqualTo("type", "HOD")
+                            .whereEqualTo("department", leave.getDepartment())
+                            .limit(1)
+                            .get().addOnCompleteListener(task -> {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            Token token = document.toObject(Token.class);
 
-            db.collection("tokens")
-                    .whereEqualTo("type", PreferenceManager.getProfileType(this))
-                    .whereEqualTo("department", leave.getDepartment())
-                    .whereArrayContains("year", leave.getYear())
-                    .limit(1)
-                    .get().addOnCompleteListener(task -> {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d(TAG, document.getId() + " => " + document.getData());
-                    Token token = document.toObject(Token.class);
+                            sendNotification(token.getToken(), "Request came from Staff " + token.getName() + " for " + leave.getName());
+                        }
+                    });
+                break;
+            case "HOD":
 
-                    sendNotification(token.getToken(), leave);
-                }
-            });
+                db.collection("tokens")
+                        .whereEqualTo("uId", leave.getuId())
+                        .whereEqualTo("type", "Student")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .whereArrayContains("year", leave.getYear())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by HOD \n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Request forwarded to Principal");
+                    }
+                });
+                db.collection("tokens")
+                        .whereEqualTo("type", "Staff")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .whereArrayContains("year", leave.getYear())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by HOD for " + leave.getName() + "\n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Request forwarded to Principal for " + leave.getName());
+                    }
+                });
+                if (leave.getStatus() != 104)
+                    db.collection("tokens")
+                            .whereEqualTo("type", "Principal")
+                            .limit(1)
+                            .get().addOnCompleteListener(task -> {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            Token token = document.toObject(Token.class);
 
-        } else if (PreferenceManager.getProfileType(this).equals("HOD")) {
-        } else if (PreferenceManager.getProfileType(this).equals("Principal")) {
+                            sendNotification(token.getToken(), "Request came from HOD of " + leave.getDepartment() + " for " + leave.getName());
+                        }
+                    });
+                break;
+            case "Principal":
+
+                db.collection("tokens")
+                        .whereEqualTo("uId", leave.getuId())
+                        .whereEqualTo("type", "Student")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .whereArrayContains("year", leave.getYear())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by Principal \n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Leave Approved by Principal");
+                    }
+                });
+                db.collection("tokens")
+                        .whereEqualTo("type", "Staff")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .whereArrayContains("year", leave.getYear())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by Principal for " + leave.getName() + "\n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Leave Approved by Principal for " + leave.getName());
+                    }
+                });
+                db.collection("tokens")
+                        .whereEqualTo("type", "HOD")
+                        .whereEqualTo("department", leave.getDepartment())
+                        .limit(1)
+                        .get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+                        Token token = document.toObject(Token.class);
+                        if (leave.getStatus() == 104)
+                            sendNotification(token.getToken(), "Request rejected by Principal for " + leave.getName() + "\n Reason : " + leave.getRejectedReason());
+                        else
+                            sendNotification(token.getToken(), "Leave Approved by Principal for " + leave.getName());
+                    }
+                });
+                break;
         }
     }
 

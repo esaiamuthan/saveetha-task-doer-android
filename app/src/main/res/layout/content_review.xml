@@ -10,11 +10,27 @@
         tools:context=".ReviewActivity"
         tools:showIn="@layout/activity_review">
 
+        <TextView
+            android:id="@+id/tvFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:drawableEnd="@drawable/ic_attach_file_black_24dp"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="end"
+            android:padding="@dimen/spacing_normal"
+            android:text="File"
+            android:textColor="@color/color_primary"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/etRejectReason"
+            android:layout_below="@+id/tvFile"
             android:clipToPadding="false"
             android:padding="@dimen/spacing_normal" />
 

@@ -21,6 +21,8 @@ public class Leave implements Serializable {
     public String rejectedReason;
     public long createdAt;
 
+    public String fileURI;
+
     public String getDocumentId() {
         return documentId;
     }
@@ -139,5 +141,13 @@ public class Leave implements Serializable {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getFileURI() {
+        return fileURI;
+    }
+
+    public void setFileURI(String fileURI) {
+        this.fileURI = fileURI;
     }
 }

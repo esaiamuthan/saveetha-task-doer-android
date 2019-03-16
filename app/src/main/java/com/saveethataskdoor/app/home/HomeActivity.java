@@ -73,6 +73,7 @@ public class HomeActivity extends BaseActivity {
         binding.contentHome.tvOrderFood.setOnClickListener(v -> {
             startActivity(new Intent(this, FoodShopActivity.class));
         });
+        binding.contentHome.tvMyOrders.setVisibility(View.GONE);
         binding.contentHome.tvMyOrders.setOnClickListener(v -> {
             startActivity(new Intent(this, MyOrderActivity.class));
         });
@@ -96,12 +97,21 @@ public class HomeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
+                db.collection("tokens")
+                        .document(Objects.requireNonNull(mAuth.getUid()))
+                        .delete()
+                        .addOnCompleteListener(taskNew -> {
+                            Log.w(TAG, "getInstanceId failed" + taskNew);
+                            FirebaseAuth.getInstance().signOut();
 
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(tasknew -> {
+                            Log.w(TAG, "getInstanceId failed" + tasknew);
+                        });
 
                 break;
         }
@@ -123,8 +133,7 @@ public class HomeActivity extends BaseActivity {
                     String token = task.getResult().getToken();
 
                     // Log and toast
-                    String msg = getString(R.string.app_name, token);
-                    Log.d(TAG, msg);
+                    Log.d(TAG, token);
 
 
                     if (currentUserInfo == null) {

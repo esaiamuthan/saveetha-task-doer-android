@@ -155,6 +155,27 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/accept_to_forward_this_letter_to_class_advisor" />
+
+                <LinearLayout
+                    android:id="@+id/chooseFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvFile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_attach_file_black_24dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/choose_file"
+                        android:textColor="@color/color_primary"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
